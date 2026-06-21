@@ -10,7 +10,7 @@ import { Metadata } from "next";
 export const generateMetadata = async ({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> => {
   const { id } = await params;
 
@@ -47,7 +47,7 @@ export const generateMetadata = async ({
 export default async function NoteDetail({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
 
