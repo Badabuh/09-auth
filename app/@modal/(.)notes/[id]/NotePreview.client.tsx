@@ -1,6 +1,6 @@
 "use client";
 
-import { getNoteById } from "@/lib/api/apiClient";
+import { getNoteById } from "@/lib/api/clientApi";
 import css from "./NotePreview.module.css";
 import { useQuery } from "@tanstack/react-query";
 import Modal from "../../../../components/Modal/Modal";

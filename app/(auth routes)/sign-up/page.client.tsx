@@ -1,7 +1,7 @@
 "use client";
 
 import { Formik, Form, Field } from "formik";
-import { register } from "../../../lib/api/apiClient";
+import { register } from "../../../lib/api/clientApi";
 import { useAuthStore } from "../../../lib/store/authStore";
 import axios from "axios";
 // import { redirect } from "next/navigation";

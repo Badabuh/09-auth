@@ -1,46 +1,45 @@
-import { NextRequest, NextResponse } from "next/server";
-import { apiClient } from "../../api";
-import { cookies } from "next/headers";
-import { parse } from "cookie";
-import axios from "axios";
+import { NextRequest, NextResponse } from 'next/server';
+import { api } from '../../api';
+import { cookies } from 'next/headers';
+import { parse } from 'cookie';
+import { isAxiosError } from 'axios';
+import { logErrorResponse } from '../../_utils/utils';
 
-export async function POST(request: NextRequest) {
-  const body = await request.json();
+export async function POST(req: NextRequest) {
   try {
-    const response = await apiClient.post("/auth/register", body);
+    const body = await req.json();
+
+    const apiRes = await api.post('auth/register', body);
+
     const cookieStore = await cookies();
-    const responseHeaders = response.headers["set-cookie"];
-    if (responseHeaders) {
-      const cookieArray = Array.isArray(responseHeaders)
-        ? responseHeaders
-        : [responseHeaders];
-      for (const cookie of cookieArray) {
-        const parsed = parse(cookie);
+    const setCookie = apiRes.headers['set-cookie'];
+
+    if (setCookie) {
+      const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie];
+      for (const cookieStr of cookieArray) {
+        const parsed = parse(cookieStr);
+
         const options = {
           expires: parsed.Expires ? new Date(parsed.Expires) : undefined,
           path: parsed.Path,
-          maxAge: Number(parsed["Max-Age"]),
+          maxAge: Number(parsed['Max-Age']),
         };
-        if (parsed.accessToken) {
-          cookieStore.set("accessToken", parsed.accessToken, options);
-        }
-        if (parsed.refreshToken) {
-          cookieStore.set("refreshToken", parsed.refreshToken, options);
-        }
+        if (parsed.accessToken) cookieStore.set('accessToken', parsed.accessToken, options);
+        if (parsed.refreshToken) cookieStore.set('refreshToken', parsed.refreshToken, options);
       }
+      return NextResponse.json(apiRes.data, { status: apiRes.status });
     }
 
-    return NextResponse.json(response.data);
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const status = error.response?.status ?? 400;
-      const data = error.response?.data ?? { message: "Registration failed" };
-      return NextResponse.json(data, { status });
+    if (isAxiosError(error)) {
+      logErrorResponse(error.response?.data);
+      return NextResponse.json(
+        { error: error.message, response: error.response?.data },
+        { status: error.status }
+      );
     }
-
-    return NextResponse.json(
-      { message: "Registration failed" },
-      { status: 400 },
-    );
+    logErrorResponse({ message: (error as Error).message });
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

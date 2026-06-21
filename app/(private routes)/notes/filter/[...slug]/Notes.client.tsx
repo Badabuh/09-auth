@@ -9,7 +9,7 @@ import NoteList from "../../../../../components/NoteList/NoteList";
 import { keepPreviousData } from "@tanstack/react-query";
 import type { NoteTag } from "@/types/note";
 import { useRouter } from "next/dist/client/components/navigation";
-import { fetchNotes } from "@/lib/api/apiClient";
+import { fetchNotes } from "@/lib/api/clientApi";
 
 const NOTES_PER_PAGE = 12;
 

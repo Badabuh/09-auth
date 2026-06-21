@@ -1,49 +1,54 @@
-import { NextRequest, NextResponse } from "next/server";
-import { apiClient } from "../../api";
-import { cookies } from "next/headers";
-import axios from "axios";
+export const dynamic = 'force-dynamic';
+
+import { NextResponse } from 'next/server';
+import { api } from '../../api';
+import { cookies } from 'next/headers';
+import { logErrorResponse } from '../../_utils/utils';
+import { isAxiosError } from 'axios';
 
 export async function GET() {
   try {
     const cookieStore = await cookies();
-    const response = await apiClient.get("/users/me", {
+
+    const res = await api.get('/users/me', {
       headers: {
         Cookie: cookieStore.toString(),
       },
     });
-
-    return NextResponse.json(response.data);
+    return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const status = error.response?.status ?? 500;
-      const data = error.response?.data ?? { message: "Failed to fetch user" };
-      return NextResponse.json(data, { status });
+    if (isAxiosError(error)) {
+      logErrorResponse(error.response?.data);
+      return NextResponse.json(
+        { error: error.message, response: error.response?.data },
+        { status: error.status }
+      );
     }
-    return NextResponse.json(
-      { message: "Failed to fetch user" },
-      { status: 500 },
-    );
+    logErrorResponse({ message: (error as Error).message });
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
-export async function PATCH(request: NextRequest) {
+
+export async function PATCH(request: Request) {
   try {
-    const body = await request.json();
     const cookieStore = await cookies();
-    const response = await apiClient.patch("/users/me", body, {
+    const body = await request.json();
+
+    const res = await api.patch('/users/me', body, {
       headers: {
         Cookie: cookieStore.toString(),
       },
     });
-    return NextResponse.json(response.data);
+    return NextResponse.json(res.data, { status: res.status });
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      const status = error.response?.status ?? 500;
-      const data = error.response?.data ?? { message: "Failed to update user" };
-      return NextResponse.json(data, { status });
+    if (isAxiosError(error)) {
+      logErrorResponse(error.response?.data);
+      return NextResponse.json(
+        { error: error.message, response: error.response?.data },
+        { status: error.status }
+      );
     }
-    return NextResponse.json(
-      { message: "Failed to update user" },
-      { status: 500 },
-    );
+    logErrorResponse({ message: (error as Error).message });
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

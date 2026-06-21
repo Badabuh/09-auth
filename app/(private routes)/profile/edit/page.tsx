@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Field, Form, Formik, FormikHelpers } from "formik";
 import { useEffect, useState } from "react";
-import { getUser } from "@/lib/api/apiClient";
+import { getUser } from "@/lib/api/clientApi";
 import { updateMe } from "@/lib/api/clientApi";
 import { useAuthStore } from "@/lib/store/authStore";
 import type { User } from "@/types/user";

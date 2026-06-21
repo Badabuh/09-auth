@@ -1,6 +1,6 @@
 "use client";
 
-import { getSession, getUser } from "../../lib/api/apiClient";
+import { getSession, getUser } from "../../lib/api/clientApi";
 import { useAuthStore } from "../../lib/store/authStore";
 import { useEffect } from "react";
 
