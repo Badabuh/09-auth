@@ -8,7 +8,7 @@ export interface AuthState {
   clearAuthState: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>()((set) => ({
   isAuthenticated: false,
   user: null,
   setAuthState: (user) => set({ user, isAuthenticated: !!user }),
