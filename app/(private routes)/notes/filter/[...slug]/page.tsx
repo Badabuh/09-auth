@@ -1,5 +1,4 @@
 import { NOTE_TAGS } from "@/types/note";
-import { fetchNotes } from "../../../../lib/api";
 import {
   QueryClient,
   dehydrate,
@@ -8,6 +7,7 @@ import {
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import NotesClient from "./Notes.client";
+import { fetchNotes } from "@/lib/api/apiClient";
 interface NotesFilterPageProps {
   params: Promise<{
     slug: string[];

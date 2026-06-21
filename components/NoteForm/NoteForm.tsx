@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { NOTE_TAGS } from "../../types/note";
 import type { CreateNotePayload, NoteTag } from "../../types/note";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createNote } from "../../lib/api";
+import { createNote } from "../../lib/api/apiClient";
 import { useRouter } from "next/navigation";
 import { useStore } from "../../lib/store/noteStore";
 

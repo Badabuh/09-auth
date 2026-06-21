@@ -4,7 +4,7 @@ import {
   dehydrate,
   HydrationBoundary,
 } from "@tanstack/react-query";
-import { getNoteById } from "../../../lib/api";
+import { getNoteById } from "@/lib/api/apiClient";
 import { Metadata } from "next";
 
 export const generateMetadata = async ({

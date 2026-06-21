@@ -1,15 +1,15 @@
 "use client";
 import css from "./NotesPage.module.css";
-import Pagination from "../../../../components/Pagination/Pagination";
-import SearchBox from "../../../../components/SearchBox/SearchBox";
+import Pagination from "../../../../../components/Pagination/Pagination";
+import SearchBox from "../../../../../components/SearchBox/SearchBox";
 import { useQuery } from "@tanstack/react-query";
-import { fetchNotes } from "../../../../lib/api";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import NoteList from "../../../../components/NoteList/NoteList";
+import NoteList from "../../../../../components/NoteList/NoteList";
 import { keepPreviousData } from "@tanstack/react-query";
 import type { NoteTag } from "@/types/note";
 import { useRouter } from "next/dist/client/components/navigation";
+import { fetchNotes } from "@/lib/api/apiClient";
 
 const NOTES_PER_PAGE = 12;
 
